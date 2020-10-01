@@ -1,0 +1,71 @@
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#include<time.h>
+
+//Bogosort 
+
+
+void swap (int *a , int *b)
+{
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+int is_sorted (int a[] ,  int n)
+{
+    for (int i=0 ; i<n-1; i++)
+    {
+        if(a[i]>a[i+1])
+            return 0;
+
+    }
+    return 1;
+    
+}
+
+void shuffle( int a[] , int n)
+{
+    for (int i=0 ; i<n ; i++)
+        swap(&a[i] , &a[rand()%n] );
+}
+
+void bogosort ( int a[] , int n)
+{
+    while(!is_sorted(a, n) )
+        shuffle(a , n);
+}
+
+void print(int a[] , int n)
+{
+    for (int i=0 ; i<n; i++)
+        printf("%d " , a[i]);
+    printf("\n");
+}
+int main()
+{
+    double bogo_time=0.0;
+	clock_t start, end;
+	srand(time(NULL));
+    
+    for(int i=0 ; i<100 ; i++)
+    {
+    int a[] = { 3,7,9,4,2,10,8,1,6,5};
+    int n = sizeof (a) / sizeof (a[0]);
+
+    start = clock();
+    bogosort(a , n);
+    printf("Sorted array\n");
+    print(a,n);
+    end = clock();
+
+	bogo_time =bogo_time + ((double) (end - start)) / (CLOCKS_PER_SEC);
+
+	printf("\nTime taken to print  numbers once is: %f\n", bogo_time);
+    }
+	printf("\nAvg Time taken to print  100 iterations in bogosort is: %f\n", bogo_time/100);
+
+    return 0;
+}
+
+
