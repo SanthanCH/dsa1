@@ -1,0 +1,183 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+   
+// functions for bst
+
+struct node
+{
+    int data;
+    struct node *left,*right;
+};
+
+void inorder_traversal(struct node *root)
+{
+    if (root != NULL)
+    {
+        inorder_traversal(root->left);
+        printf("%d ", root->data);
+        inorder_traversal(root->right);
+    }
+}
+
+void insertion(struct node *root, int key)
+{
+    struct node *newnode = (struct node *)malloc(sizeof(struct node));
+    newnode->data = key;
+    newnode->left = NULL;
+    newnode->right = NULL;
+
+    struct node *temp = root, *parent = NULL;
+    while (temp != NULL)
+    {
+        parent = temp;
+        if (newnode->data < temp->data)
+        {
+            temp = temp->left;
+        }
+        else
+        {
+            temp = temp->right;
+        }
+    }
+    if (newnode->data < parent->data)
+    {
+        parent->left = newnode;
+    }
+    else
+    {
+        parent->right = newnode;
+    }
+}
+
+int search(struct node *temp, int x)
+{
+    if (temp == NULL)
+        return 0;
+    else
+    {
+        if (temp->data == x)
+            return 1;
+        if (x < temp->data)
+        {
+            return search(temp->left, x);
+        }
+        if (x > temp->data)
+        {
+            return search(temp->right, x);
+        }
+    }
+}
+
+struct node *minvalue_node(struct node *root)
+{
+    while (root->left != NULL)
+    {
+        root = root->left;
+    }
+    return root;
+}
+
+struct node *deleteNode(struct node *root, int key)
+{
+    if (root == NULL)
+        return NULL;
+    if (key < root->data)
+        root->left = deleteNode(root->left, key);
+
+    else if (key > root->data)
+        root->right = deleteNode(root->right, key);
+
+    else
+    {
+        if (root->left == NULL)
+        {
+            struct node *temp = root->right;
+            free(root);
+            return temp;
+        }
+        else if (root->right == NULL)
+        {
+            struct node *temp = root->left;
+            free(root);
+            return temp;
+        }
+        else
+        {
+            struct node *temp = minvalue_node(root->right);
+
+            root->data = temp->data;
+
+            root->right = deleteNode(root->right, temp->data);
+        }
+    }
+    return root;
+}
+ 
+int main()
+{
+    int n, t , u, v;
+
+    printf("Enter the number of elements of a Tree : \n");
+    scanf("%d", &n);
+
+    struct node *root = (struct node *)malloc(sizeof(struct node));
+    root->left = NULL;
+    root->right = NULL;
+
+    printf("Enter the elements :\n");
+    scanf("%d", &root->data);
+
+    for (int i = 1; i < n; i++)
+    {
+        scanf("%d", &t);
+        insertion(root, t);
+    }
+
+    inorder_traversal(root);
+
+    printf("\n");
+    
+    int k,z;
+    printf("\nEnter number greater than 0 to select search\n");
+    scanf("%d" ,&k);
+
+    while(k>0)
+    {
+    printf("Enter the element to search : ");
+    scanf("%d", &u);
+    int s = search(root, u);
+
+    s == 1 ? printf("Given element is present in the Tree\n") : printf("Given element is not present in the Tree\n");
+    
+    printf("\nEnter 1 to search another element or any other key to exit\n");
+        scanf("%d", &z);
+        if(z==1)
+            continue;
+        else
+            break;
+        
+    } 
+    int l,m;
+    printf("\nEnter number greater than 0 to select delete\n");
+    scanf("%d" ,&l);
+
+    while(l>0)
+    {
+    printf("\nEnter the element to delete : ");
+    
+        scanf("%d", &v);
+        root = deleteNode(root, v);
+        inorder_traversal(root);
+        printf("\n");
+
+        printf("\nEnter 1 to delete another element or any other key to exit\n");
+        scanf("%d", &m);
+        if(m==1)
+            continue;
+        else
+            break;
+        
+    } 
+    return 0;
+}
