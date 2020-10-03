@@ -1,0 +1,143 @@
+#include<iostream>
+#include<string>
+using namespace std;
+class student{
+	string name;
+	long reg_no;
+	int total,credits;
+	public:
+		void getdata(string name,long reg_no,int total,int credits)
+		{
+			this->name=name;
+			this->reg_no=reg_no;
+			this->total=total;
+			this->credits=credits;
+		}
+	
+		void disp_data()
+		{
+			cout<<"the name of the student is"<<endl;
+			cout<<name<<endl;
+			cout<<"the reg num  of student is"<<endl;
+			cout<<reg_no<<endl;
+			cout<<"the total of the student is"<<endl;
+			cout<<total<<endl;
+			cout<<"the credits of the student is"<<endl;
+			cout<<credits<<endl;
+		}
+		virtual	double noncgpa_credits()=0;
+	
+};
+class exam :public student
+{
+	double cgpa;
+	public:
+		void getcgpa(double cgpa)
+		{
+			this->cgpa=cgpa;
+		}
+		double cgpa1()
+		{
+			return cgpa;
+		}
+		double noncgpa_credits()
+		{
+			double c=6.00;
+			return c;
+		}
+};
+class result:public exam
+{
+string grade,pass_status;
+public:
+    void getgrade()
+	{
+		
+		if(cgpa1()>=9.0)
+		{
+			
+			grade="S";		
+		}
+		else if(cgpa1()<9&&cgpa1()>=7.5)
+		{
+		
+			grade="A";
+			
+		}
+		else if(cgpa1()<7.5&&cgpa1()>=6.5)
+		{
+			
+			grade="B";
+			
+		}
+		else if(cgpa1()<6.5&&cgpa1()>=5.5)
+		{
+			
+			grade="C";
+		}
+		else
+		{
+			
+			grade="F";
+		}
+	}
+	void compute_result()
+	{
+		if(grade=="S")
+		{
+			pass_status="passed in distinction";
+		}
+		 if(grade=="A")
+		{
+				pass_status="passed in first class";
+		}
+		 if(grade=="B")
+		{
+			pass_status="passed in second  class";
+		}
+		 if(grade=="C")
+		{	pass_status="passed in third class";
+			
+		}
+		if(grade=="F")
+		{
+			pass_status="failed";
+		}
+		}
+		string gradeprint()
+		{
+			return grade;
+		}
+		
+	void declare_result()
+	{
+		student::disp_data();
+		cout<<"the cgpa of the student is"<<endl;
+		cout<<cgpa1()<<endl;
+		cout<<"the grade of the student is"<<endl;
+		getgrade();
+		cout<<gradeprint()<<endl;
+		cout<<"the pass status of the student"<<endl;
+		cout<<pass_status<<endl;
+		
+		}
+				double noncgpa_credits()
+				{
+					double a;
+					cout<<"the non credits of the student are"<<endl;
+					cin>>a;
+					return a;
+					
+	         	}
+	};
+int main()
+{
+	result a;
+	a.getdata("praneeth",123018042,6,180);
+	a.getcgpa(9.1);
+	a.getgrade();
+    a.compute_result();
+	a.declare_result();
+		
+	return 0;
+}
